@@ -5,7 +5,7 @@ Our Enviroment:
 Master = SRV1
 Slave = SRV2
 
-**Step-1: Setting up MySQL conif files.**
+**Step-1: Setting up MySQL conif files.**<br>
 
 On SRV1 edit MySQL cnf file. usually located in /etc/my.cnf or /etc/mysql/my.cnf and add below code:
 
