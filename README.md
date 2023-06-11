@@ -5,7 +5,7 @@ Our Enviroment:
 Master = SRV1
 Slave = SRV2
 
-Step-1: Setting up MySQL conif files.
+**Step-1: Setting up MySQL conif files.**
 On SRV1 edit MySQL cnf file. usually located in /etc/my.cnf or /etc/mysql/my.cnf and add below code:
 
 ```shell
@@ -43,7 +43,7 @@ auto-increment-increment = 2
 auto-increment-offset = 2
 ```
 
-Step-2: Creating replication user in MySQL
+**Step-2: Creating replication user in MySQL**
 On SRV1 loging to mysql and run below queries:
 
 ```sql
@@ -60,7 +60,7 @@ FLUSH PRIVILEGES;
 ```
 Restart MySQL service after making above changes.
 
-Step-3: Transfer MySQL databases from Master to Slave
+**Step-3: Transfer MySQL databases from Master to Slave**
 
 In order to create dump of all databases use below command:
 
@@ -85,7 +85,7 @@ After Transfering the dump restore it:
 mysql -uroot -p < /root/data.sql
 ```
 
-Step-4: Connecting slave to master
+**Step-4: Connecting slave to master**
 
 Loging to mysql and run below command to connect slave to master
 
@@ -101,7 +101,7 @@ Finally run below command to start replication:
 START SLAVE;
 ```
 
-Step-5: Check replication status
+**Step-5: Check replication status**
 
 You can login to MySQL and use below command to view slave status:
 
