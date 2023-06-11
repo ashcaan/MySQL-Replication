@@ -44,7 +44,7 @@ auto-increment-increment = 2
 auto-increment-offset = 2
 ```
 
-**Step-2: Creating replication user in MySQL**
+**Step-2: Creating replication user in MySQL**<br>
 On SRV1 loging to mysql and run below queries:
 
 ```sql
@@ -61,8 +61,7 @@ FLUSH PRIVILEGES;
 ```
 Restart MySQL service after making above changes.
 
-**Step-3: Transfer MySQL databases from Master to Slave**
-
+**Step-3: Transfer MySQL databases from Master to Slave**<br>
 In order to create dump of all databases use below command:
 
 ```shell
