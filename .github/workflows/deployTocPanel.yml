@@ -11,6 +11,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Install lftp
+      run: sudo apt-get install lftp
+
     - name: Set up FTP environment
       env:
         FTP_SERVER: ${{ secrets.FTP_SERVER }}
