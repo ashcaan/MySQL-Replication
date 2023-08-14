@@ -27,4 +27,5 @@ jobs:
 
     - name: Deploy via FTP
       run: |
-           lftp -c "open -e 'mirror -R -e -X .git/ -X .github/ -X .gitignore -X .gitattributes -X .gitmodules -X .vscode/ -X *.md -X LICENSE -X *.yml -X *.json -X *.lock --ignore-time . /public_html/' $FTP_SERVER"
+    echo "Connecting to $FTP_SERVER with user $FTP_USERNAME"
+    lftp -c "set ssl:verify-certificate no; open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER"
