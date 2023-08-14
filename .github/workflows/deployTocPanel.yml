@@ -27,4 +27,4 @@ jobs:
 
     - name: Deploy via FTP
       run: |
-        lftp -c "open -e 'mirror -R -e -x .git -x .github -x .gitignore -x .gitattributes -x .gitmodules -x .vscode -x *.md -x LICENSE -x *.yml -x *.json -x *.lock --ignore-time . /public_html/' $FTP_SERVER"
+           lftp -c "open -e 'mirror -R -e -X .git/ -X .github/ -X .gitignore -X .gitattributes -X .gitmodules -X .vscode/ -X *.md -X LICENSE -X *.yml -X *.json -X *.lock --ignore-time . /public_html/' $FTP_SERVER"
