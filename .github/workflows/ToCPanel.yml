@@ -14,20 +14,13 @@ jobs:
     - name: Install lftp
       run: sudo apt-get install lftp
 
-    - name: Set up FTP environment
+    - name: Deploy via FTP
       env:
         FTP_SERVER: ${{ secrets.FTP_SERVER }}
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
       run: |
-        echo "Host $FTP_SERVER" >> ~/.netrc
-        echo "  User $FTP_USERNAME" >> ~/.netrc
-        echo "  Password $FTP_PASSWORD" >> ~/.netrc
-        chmod 600 ~/.netrc
-
-    - name: Connect to FTP server
-      run: lftp -c "open $FTP_SERVER"
-
-    - name: Deploy via FTP
-      run: |
-        lftp -c "mirror -R -e --ignore-time . /public_html/"
+        lftp -c "
+          open -e 'mirror -R -e --ignore-time . /public_html/' $FTP_SERVER;
+          bye
+        "
