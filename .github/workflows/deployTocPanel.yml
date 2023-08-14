@@ -2,7 +2,7 @@ name: Deploy to CPanel via FTP
 on:
   push:
     branches:
-      - main  # Change this to the branch you want to trigger the deployment from
+      - main
 
 jobs:
   deploy:
@@ -11,21 +11,19 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Install lftp
-      run: sudo apt-get install lftp
-
     - name: Set up FTP environment
       env:
         FTP_SERVER: ${{ secrets.FTP_SERVER }}
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
       run: |
-        echo "Host $FTP_SERVER" >> ~/.netrc
-        echo "  User $FTP_USERNAME" >> ~/.netrc
-        echo "  Password $FTP_PASSWORD" >> ~/.netrc
+        echo "machine $FTP_SERVER login $FTP_USERNAME password $FTP_PASSWORD" > ~/.netrc
         chmod 600 ~/.netrc
+
+    - name: Install ncftp
+      run: sudo apt-get install ncftp
 
     - name: Deploy via FTP
       run: |
-    echo "Connecting to $FTP_SERVER with user $FTP_USERNAME"
-    lftp -c "set ssl:verify-certificate no; open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER"
+        ncftpput -R -v -u $FTP_USERNAME -p $FTP_PASSWORD $FTP_SERVER /public_html/ .
+
