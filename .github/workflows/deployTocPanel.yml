@@ -1,21 +1,27 @@
-name: Deploy Private GitHub repository to cPanel
+name: Deploy to CPanel via FTP
 on:
   push:
     branches:
-      - master
-jobs:
-  FTP-Deploy-Action:
-    name: 🎉 Deploy
-    runs-on: ubuntu-latest
+      - main  # Change this to the branch you want to trigger the deployment from
 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
     steps:
-      - name: 🚚 Get latest code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-      - name: 📂 Sync folders and files to the server
-        uses: ashcaan/MySQL-Replication
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up FTP environment
+      env:
+        FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      run: |
+        echo "Host $FTP_SERVER" >> ~/.netrc
+        echo "  User $FTP_USERNAME" >> ~/.netrc
+        echo "  Password $FTP_PASSWORD" >> ~/.netrc
+        chmod 600 ~/.netrc
+
+    - name: Deploy via FTP
+      run: |
+        lftp -c "open -e 'mirror -R -e -x .git -x .github -x .gitignore -x .gitattributes -x .gitmodules -x .vscode -x *.md -x LICENSE -x *.yml -x *.json -x *.lock --ignore-time . /public_html/' $FTP_SERVER"
