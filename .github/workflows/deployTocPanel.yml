@@ -1,29 +1,21 @@
-name: Deploy to CPanel via FTP
+name: Deploy Private GitHub repository to cPanel
 on:
   push:
     branches:
-      - main
-
+      - master
 jobs:
-  deploy:
+  FTP-Deploy-Action:
+    name: 🎉 Deploy
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up FTP environment
-      env:
-        FTP_SERVER: ${{ secrets.FTP_SERVER }}
-        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-      run: |
-        echo "machine $FTP_SERVER login $FTP_USERNAME password $FTP_PASSWORD" > ~/.netrc
-        chmod 600 ~/.netrc
-
-    - name: Install ncftp
-      run: sudo apt-get install ncftp
-
-    - name: Deploy via FTP
-      run: |
-        ncftpput -R -v $FTP_SERVER /public_html/ .
-
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: 📂 Sync folders and files to the server
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
