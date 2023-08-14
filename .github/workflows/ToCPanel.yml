@@ -25,6 +25,9 @@ jobs:
         echo "  Password $FTP_PASSWORD" >> ~/.netrc
         chmod 600 ~/.netrc
 
+    - name: Connect to FTP server
+      run: lftp -c "open $FTP_SERVER"
+
     - name: Deploy via FTP
       run: |
-        lftp -c "open -e 'mirror -R -e --ignore-time . /public_html/' $FTP_SERVER"
+        lftp -c "mirror -R -e --ignore-time . /public_html/"
