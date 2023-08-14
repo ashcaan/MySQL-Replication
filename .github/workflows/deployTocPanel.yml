@@ -25,5 +25,5 @@ jobs:
 
     - name: Deploy via FTP
       run: |
-        ncftpput -R -v -u $FTP_USERNAME -p $FTP_PASSWORD $FTP_SERVER /public_html/ .
+        ncftpput -R -v $FTP_SERVER /public_html/ .
 
